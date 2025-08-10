@@ -34,9 +34,12 @@
       margin: 0.25rem 0;
     }
 
-    /* Make summary clickable */
+    /* Make summary clickable and align custom icon with first line */
     summary {
       cursor: pointer;
+      display: flex;           /* Put icon (::before) and content on one row */
+      align-items: flex-start;  /* Align icon with the top (first line) of content */
+      gap: .25rem;              /* Small space between icon and content */
     }
 
     /* Hide default disclosure triangle across browsers */
@@ -46,11 +49,13 @@
 
     /* Custom disclosure icons */
     summary::before {
-      content: "▸ "; /* right arrow when closed */
-      transition: transform .2s ease;
+      content: "▸";            /* right arrow when closed */
+      flex: 0 0 auto;           /* Don't let the icon stretch */
+      line-height: 1;           /* Tighter box to align with text */
+      margin-top: 0.15em;       /* Nudge to visually align baseline */
     }
     details[open] > summary::before {
-      content: "▾ "; /* down arrow when open */
+      content: "▾";            /* down arrow when open */
     }
 
     /* Contact link styles */
@@ -60,7 +65,7 @@
 
     /* Two-line entry layout */
     .name-line { font-weight: bold; }
-    .title-line { font-size: 0.9em; color: #333; margin-left: 1.2em; }
+    .title-line { font-size: 0.9em; color: #333; /* no margin-left needed due to flex layout */ }
   </style>
 </head>
 <body>
@@ -85,12 +90,83 @@
       {
         firstName: "Bob", lastName: "Johnson", title: "VP of Operations", phone: null, email: "ops.vp@example.com",
         subordinates: [
-          { firstName: "Carol", lastName: "Lee", title: "Operations Manager — Region A", phone: "+15550000021", email: null },
-          { firstName: "David", lastName: "Wong", title: "Operations Manager — Region B", phone: "+15550000022", email: "opsb.manager@example.com" }
+          {
+            firstName: "Carol", lastName: "Lee", title: "Operations Manager — Region A", phone: "+15550000021", email: null,
+            subordinates: [
+              { firstName: "Wendy", lastName: "Park", title: "Team Lead — Warehouse",      phone: "+15550000031", email: "wh.lead@example.com" },
+              { firstName: "Noah",  lastName: "Patel", title: "Team Lead — Logistics",      phone: null,            email: "log.lead@example.com" },
+              { firstName: "Iris",  lastName: "Ng",    title: "Team Lead — Customer Service", phone: "+15550000033", email: null }
+            ]
+          },
+          {
+            firstName: "David", lastName: "Wong", title: "Operations Manager — Region B", phone: "+15550000022", email: "opsb.manager@example.com",
+            subordinates: [
+              { firstName: "Felix", lastName: "Young", title: "Team Lead — Fulfillment",    phone: null,            email: null },
+              { firstName: "Jade",  lastName: "Ortiz", title: "Team Lead — Transportation", phone: "+15550000035", email: "trans.lead@example.com" },
+              { firstName: "Ravi",  lastName: "Mehta", title: "Team Lead — Returns",        phone: "+15550000036", email: null }
+            ]
+          }
         ]
       },
       {
-        firstName: "Evelyn", lastName: "Clark", title: "VP of Finance", phone: "+15550000002", email: "finance.vp@example.com"
+        firstName: "Evelyn", lastName: "Clark", title: "VP of Finance", phone: "+15550000002", email: "finance.vp@example.com",
+        subordinates: [
+          {
+            firstName: "Grace", lastName: "Baker", title: "Controller", phone: null, email: "controller@example.com",
+            subordinates: [
+              { firstName: "Omar",   lastName: "Diaz",    title: "Senior Accountant", phone: "+15550000041", email: "sracct@example.com" },
+              { firstName: "Paige",  lastName: "Kim",     title: "AP/AR Lead",        phone: null,            email: "apar.lead@example.com" },
+              { firstName: "Quinn",  lastName: "Reeves",  title: "Payroll Lead",      phone: "+15550000043", email: null }
+            ]
+          },
+          {
+            firstName: "Henry", lastName: "Adams", title: "Treasury Manager", phone: "+15550000023", email: null,
+            subordinates: [
+              { firstName: "Sara",  lastName: "Lin",   title: "Analyst — Cash", phone: "+15550000051", email: null },
+              { firstName: "Tomas", lastName: "Ivanov", title: "Analyst — Risk", phone: null,            email: "risk.analyst@example.com" }
+            ]
+          }
+        ]
+      },
+      {
+        firstName: "Maya", lastName: "Garcia", title: "VP of Technology", phone: null, email: "tech.vp@example.com",
+        subordinates: [
+          {
+            firstName: "Nina", lastName: "Hughes", title: "Engineering Manager", phone: "+15550000024", email: "eng.manager@example.com",
+            subordinates: [
+              { firstName: "Uma",   lastName: "Zhang",   title: "Lead — Frontend", phone: "+15550000061", email: "fe.lead@example.com" },
+              { firstName: "Vince", lastName: "Cole",    title: "Lead — Backend",  phone: null,            email: "be.lead@example.com" },
+              { firstName: "Walt",  lastName: "Brown",   title: "Lead — DevOps",   phone: "+15550000063", email: null }
+            ]
+          },
+          {
+            firstName: "Olivia", lastName: "Nash", title: "IT Manager", phone: "+15550000025", email: null,
+            subordinates: [
+              { firstName: "Yara",  lastName: "Santos", title: "Systems Admin Lead", phone: "+15550000071", email: null },
+              { firstName: "Zane",  lastName: "Foster", title: "Service Desk Lead",  phone: null,            email: "sd.lead@example.com" }
+            ]
+          }
+        ]
+      },
+      {
+        firstName: "Peter", lastName: "Reed", title: "VP of Sales & Marketing", phone: "+15550000004", email: "salesmktg.vp@example.com",
+        subordinates: [
+          {
+            firstName: "Rosa", lastName: "Martin", title: "Sales Manager — Enterprise", phone: null, email: "sales.ent@example.com",
+            subordinates: [
+              { firstName: "Ava",  lastName: "Lopez", title: "Account Lead — East", phone: "+15550000081", email: null },
+              { firstName: "Ben",  lastName: "Choi",  title: "Account Lead — West", phone: null,            email: "acct.west@example.com" }
+            ]
+          },
+          {
+            firstName: "Sam", lastName: "Turner", title: "Marketing Manager", phone: "+15550000026", email: "mktg.manager@example.com",
+            subordinates: [
+              { firstName: "Cara", lastName: "Yates",  title: "Lead — Content", phone: null,            email: "content.lead@example.com" },
+              { firstName: "Drew", lastName: "Ibarra", title: "Lead — Events",  phone: "+15550000083", email: null },
+              { firstName: "Eli",  lastName: "Quinn",  title: "Lead — Growth",  phone: "+15550000084", email: "growth.lead@example.com" }
+            ]
+          }
+        ]
       }
     ]
   };
