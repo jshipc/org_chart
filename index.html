@@ -23,9 +23,10 @@
       margin-bottom: 1rem;
     }
 
-    /* Ordered list padding for indentation */
+    /* Ordered list padding for indentation; remove index numbers while keeping indentation */
     ol {
       padding-left: 1.25rem;
+      list-style: none;
     }
 
     /* Space between accordion sections */
@@ -39,15 +40,9 @@
     }
 
     /* Cross-browser removal of default disclosure markers */
-    details > summary { 
-      list-style: none; /* Chromium, Firefox, Safari */
-    }
-    details > summary::marker { 
-      content: ""; /* Firefox */
-    }
-    details > summary::-webkit-details-marker { 
-      display: none; /* WebKit/Blink */
-    }
+    details > summary { list-style: none; }
+    details > summary::marker { content: ""; }
+    details > summary::-webkit-details-marker { display: none; }
 
     /* Custom closed state icon */
     summary::before {
@@ -59,6 +54,11 @@
     details[open] > summary::before {
       content: "▾ "; /* triangle pointing down */
     }
+
+    /* Tiny styling for contact chips; keep it minimal */
+    .contacts { font-size: 0.9em; margin-left: .5rem; white-space: nowrap; }
+    .contacts a { text-decoration: underline; }
+    .sep { margin: 0 .25rem; }
   </style>
 </head>
 <body>
@@ -71,70 +71,162 @@
     Inline JSON data representing the organization hierarchy.
     Each object can have:
       - title: string (role name)
+      - phone: string | null (optional)
+      - email: string | null (optional)
       - subordinates: array of similar objects (optional)
   */
   const orgData = {
-    "title": "Chief Executive Officer (CEO)",
-    "subordinates": [
+    title: "Chief Executive Officer (CEO)",
+    phone: "+15550000001",
+    email: "ceo@example.com",
+    subordinates: [
       {
-        "title": "VP of Operations",
-        "subordinates": [
-          { "title": "Operations Manager — Region A", "subordinates": [
-            { "title": "Team Lead — Warehouse" },
-            { "title": "Team Lead — Logistics" },
-            { "title": "Team Lead — Customer Service" }
-          ]},
-          { "title": "Operations Manager — Region B", "subordinates": [
-            { "title": "Team Lead — Fulfillment" },
-            { "title": "Team Lead — Transportation" },
-            { "title": "Team Lead — Returns" }
-          ]}
+        title: "VP of Operations",
+        phone: null,                 // Null -> show "none" for SMS
+        email: "ops.vp@example.com",
+        subordinates: [
+          { 
+            title: "Operations Manager — Region A",
+            phone: "+15550000021",
+            email: null,              // Null -> show "none" for Email
+            subordinates: [
+              { title: "Team Lead — Warehouse", phone: "+15550000031", email: "wh.lead@example.com" },
+              { title: "Team Lead — Logistics", phone: null,            email: "log.lead@example.com" },
+              { title: "Team Lead — Customer Service", phone: "+15550000033", email: null }
+            ]
+          },
+          { 
+            title: "Operations Manager — Region B",
+            phone: "+15550000022",
+            email: "opsb.manager@example.com",
+            subordinates: [
+              { title: "Team Lead — Fulfillment",   phone: null,            email: null },
+              { title: "Team Lead — Transportation", phone: "+15550000035", email: "trans.lead@example.com" },
+              { title: "Team Lead — Returns",        phone: "+15550000036", email: null }
+            ]
+          }
         ]
       },
       {
-        "title": "VP of Finance",
-        "subordinates": [
-          { "title": "Controller", "subordinates": [
-            { "title": "Senior Accountant" },
-            { "title": "AP/AR Lead" },
-            { "title": "Payroll Lead" }
-          ]},
-          { "title": "Treasury Manager", "subordinates": [
-            { "title": "Analyst — Cash" },
-            { "title": "Analyst — Risk" }
-          ]}
+        title: "VP of Finance",
+        phone: "+15550000002",
+        email: "finance.vp@example.com",
+        subordinates: [
+          { 
+            title: "Controller",
+            phone: null,
+            email: "controller@example.com",
+            subordinates: [
+              { title: "Senior Accountant", phone: "+15550000041", email: "sracct@example.com" },
+              { title: "AP/AR Lead",        phone: null,            email: "apar.lead@example.com" },
+              { title: "Payroll Lead",       phone: "+15550000043", email: null }
+            ]
+          },
+          { 
+            title: "Treasury Manager",
+            phone: "+15550000023",
+            email: null,
+            subordinates: [
+              { title: "Analyst — Cash", phone: "+15550000051", email: null },
+              { title: "Analyst — Risk", phone: null,            email: "risk.analyst@example.com" }
+            ]
+          }
         ]
       },
       {
-        "title": "VP of Technology",
-        "subordinates": [
-          { "title": "Engineering Manager", "subordinates": [
-            { "title": "Lead — Frontend" },
-            { "title": "Lead — Backend" },
-            { "title": "Lead — DevOps" }
-          ]},
-          { "title": "IT Manager", "subordinates": [
-            { "title": "Systems Admin Lead" },
-            { "title": "Service Desk Lead" }
-          ]}
+        title: "VP of Technology",
+        phone: null,
+        email: "tech.vp@example.com",
+        subordinates: [
+          { 
+            title: "Engineering Manager",
+            phone: "+15550000024",
+            email: "eng.manager@example.com",
+            subordinates: [
+              { title: "Lead — Frontend", phone: "+15550000061", email: "fe.lead@example.com" },
+              { title: "Lead — Backend",  phone: null,            email: "be.lead@example.com" },
+              { title: "Lead — DevOps",   phone: "+15550000063", email: null }
+            ]
+          },
+          { 
+            title: "IT Manager",
+            phone: "+15550000025",
+            email: null,
+            subordinates: [
+              { title: "Systems Admin Lead", phone: "+15550000071", email: null },
+              { title: "Service Desk Lead",  phone: null,            email: "sd.lead@example.com" }
+            ]
+          }
         ]
       },
       {
-        "title": "VP of Sales & Marketing",
-        "subordinates": [
-          { "title": "Sales Manager — Enterprise", "subordinates": [
-            { "title": "Account Lead — East" },
-            { "title": "Account Lead — West" }
-          ]},
-          { "title": "Marketing Manager", "subordinates": [
-            { "title": "Lead — Content" },
-            { "title": "Lead — Events" },
-            { "title": "Lead — Growth" }
-          ]}
+        title: "VP of Sales & Marketing",
+        phone: "+15550000004",
+        email: "salesmktg.vp@example.com",
+        subordinates: [
+          { 
+            title: "Sales Manager — Enterprise",
+            phone: null,
+            email: "sales.ent@example.com",
+            subordinates: [
+              { title: "Account Lead — East", phone: "+15550000081", email: null },
+              { title: "Account Lead — West", phone: null,            email: "acct.west@example.com" }
+            ]
+          },
+          { 
+            title: "Marketing Manager",
+            phone: "+15550000026",
+            email: "mktg.manager@example.com",
+            subordinates: [
+              { title: "Lead — Content", phone: null,            email: "content.lead@example.com" },
+              { title: "Lead — Events",  phone: "+15550000083", email: null },
+              { title: "Lead — Growth",  phone: "+15550000084", email: "growth.lead@example.com" }
+            ]
+          }
         ]
       }
     ]
   };
+
+  // Build a tiny contact chip. If value is null, output "none" instead of a link.
+  function contactChip(role) {
+    const wrap = document.createElement('span');
+    wrap.className = 'contacts';
+
+    const sms = document.createElement('span');
+    if (role.phone) {
+      const a = document.createElement('a');
+      a.href = `sms:${encodeURIComponent(role.phone)}`;
+      a.textContent = 'SMS';
+      a.setAttribute('aria-label', `Send SMS to ${role.title}`);
+      sms.appendChild(a);
+    } else {
+      sms.textContent = 'none';
+    }
+
+    const email = document.createElement('span');
+    if (role.email) {
+      const a = document.createElement('a');
+      a.href = `mailto:${encodeURIComponent(role.email)}`;
+      a.textContent = 'Email';
+      a.setAttribute('aria-label', `Send email to ${role.title}`);
+      email.appendChild(a);
+    } else {
+      email.textContent = 'none';
+    }
+
+    // Compose: [ SMS | Email ]
+    wrap.appendChild(document.createTextNode('['));
+    wrap.appendChild(sms);
+    const sep = document.createElement('span'); sep.className = 'sep'; sep.textContent = '|';
+    wrap.appendChild(document.createTextNode(' '));
+    wrap.appendChild(sep);
+    wrap.appendChild(document.createTextNode(' '));
+    wrap.appendChild(email);
+    wrap.appendChild(document.createTextNode(' ]'));
+
+    return wrap;
+  }
 
   /*
     Recursive function to create a role element.
@@ -148,7 +240,13 @@
 
       // Create the clickable summary for this role
       const summary = document.createElement('summary');
-      summary.textContent = role.title;
+      // Title
+      const titleSpan = document.createElement('span');
+      titleSpan.textContent = role.title;
+      summary.appendChild(titleSpan);
+      // Contacts sit inside the summary (inline), but we prevent toggle on link click below
+      summary.appendChild(contactChip(role));
+
       details.appendChild(summary);
 
       // Create a list for subordinates
@@ -167,11 +265,21 @@
       return details;
     } else {
       // No subordinates: return a text element only
-      const span = document.createElement('span');
-      span.textContent = role.title;
-      return span;
+      const container = document.createElement('span');
+      const titleSpan = document.createElement('span');
+      titleSpan.textContent = role.title;
+      container.appendChild(titleSpan);
+      container.appendChild(contactChip(role));
+      return container;
     }
   }
+
+  // Prevent <details> from toggling when clicking links inside <summary>
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('summary a')) {
+      e.stopPropagation();
+    }
+  });
 
   // Build the org chart and insert into the container
   document.getElementById('org-chart').appendChild(createRole(orgData));
