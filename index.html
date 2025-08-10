@@ -49,13 +49,13 @@
 
     /* Custom disclosure icons */
     summary::before {
-      content: "▸";            /* right arrow when closed */
+      content: "+";            /* right arrow when closed */
       flex: 0 0 auto;           /* Don't let the icon stretch */
       line-height: 1;           /* Tighter box to align with text */
       margin-top: 0.15em;       /* Nudge to visually align baseline */
     }
     details[open] > summary::before {
-      content: "▾";            /* down arrow when open */
+      content: "-";            /* down arrow when open */
     }
 
     /* Contact link styles */
@@ -70,6 +70,7 @@
 </head>
 <body>
   <h1>Speakers Committee</h1>
+  <div class="subtitle">Click + to show team, - to hide</div>
   <div class="subtitle">SMS and Email links are functional placeholders</div>
   <!-- Container where JavaScript will insert the generated org chart -->
   <div id="org-chart"></div>
