@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Organization Chart — JSON Inline Accordion</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; line-height: 1.5; margin: 0; padding: 1rem; max-width: 80ch; }
+    h1 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); margin-bottom: 1rem; }
+    ol { padding-left: 1.25rem; }
+    details { margin: 0.25rem 0; }
+    summary { cursor: pointer; }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: "▸ "; transition: transform .2s ease; }
+    details[open] > summary::before { content: "▾ "; }
+  </style>
+</head>
+<body>
+  <h1>Organization Chart</h1>
+  <div id="org-chart"></div>
+
+  <script>
+  const orgData = {
+    "title": "Chief Executive Officer (CEO)",
+    "subordinates": [
+      {
+        "title": "VP of Operations",
+        "subordinates": [
+          { "title": "Operations Manager — Region A", "subordinates": [
+            { "title": "Team Lead — Warehouse" },
+            { "title": "Team Lead — Logistics" },
+            { "title": "Team Lead — Customer Service" }
+          ]},
+          { "title": "Operations Manager — Region B", "subordinates": [
+            { "title": "Team Lead — Fulfillment" },
+            { "title": "Team Lead — Transportation" },
+            { "title": "Team Lead — Returns" }
+          ]}
+        ]
+      },
+      {
+        "title": "VP of Finance",
+        "subordinates": [
+          { "title": "Controller", "subordinates": [
+            { "title": "Senior Accountant" },
+            { "title": "AP/AR Lead" },
+            { "title": "Payroll Lead" }
+          ]},
+          { "title": "Treasury Manager", "subordinates": [
+            { "title": "Analyst — Cash" },
+            { "title": "Analyst — Risk" }
+          ]}
+        ]
+      },
+      {
+        "title": "VP of Technology",
+        "subordinates": [
+          { "title": "Engineering Manager", "subordinates": [
+            { "title": "Lead — Frontend" },
+            { "title": "Lead — Backend" },
+            { "title": "Lead — DevOps" }
+          ]},
+          { "title": "IT Manager", "subordinates": [
+            { "title": "Systems Admin Lead" },
+            { "title": "Service Desk Lead" }
+          ]}
+        ]
+      },
+      {
+        "title": "VP of Sales & Marketing",
+        "subordinates": [
+          { "title": "Sales Manager — Enterprise", "subordinates": [
+            { "title": "Account Lead — East" },
+            { "title": "Account Lead — West" }
+          ]},
+          { "title": "Marketing Manager", "subordinates": [
+            { "title": "Lead — Content" },
+            { "title": "Lead — Events" },
+            { "title": "Lead — Growth" }
+          ]}
+        ]
+      }
+    ]
+  };
+
+  function createRole(role) {
+    if (role.subordinates && role.subordinates.length) {
+      const details = document.createElement('details');
+      const summary = document.createElement('summary');
+      summary.textContent = role.title;
+      details.appendChild(summary);
+      const list = document.createElement('ol');
+      role.subordinates.forEach(sub => {
+        const li = document.createElement('li');
+        li.appendChild(createRole(sub));
+        list.appendChild(li);
+      });
+      details.appendChild(list);
+      return details;
+    } else {
+      const span = document.createElement('span');
+      span.textContent = role.title;
+      return span;
+    }
+  }
+
+  document.getElementById('org-chart').appendChild(createRole(orgData));
+  </script>
+</body>
+</html>
