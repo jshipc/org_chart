@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Organization Chart</title>
+  <title>Organization Chart — JSON Inline Accordion</title>
   <style>
     /* Use a universal box-sizing so padding/margin calculations are predictable */
     * { box-sizing: border-box; }
@@ -38,38 +38,26 @@
       cursor: pointer;
     }
 
-    /* Hide the default disclosure triangle */
-    
-    /*
-     summary::-webkit-details-marker {
-    /  display: none;
-    }
-    */
-
-    /* 1) Turn off the built-in marker in modern engines */
+    /* Cross-browser removal of default disclosure markers */
     details > summary { 
-    list-style: none;            /* Chromium 119+, Firefox 118+, Safari 17+ */
+      list-style: none; /* Chromium, Firefox, Safari */
     }
-
-    /* 2) Firefox-specific marker */
     details > summary::marker { 
-    content: "";                 /* Hide the disclosure triangle */
+      content: ""; /* Firefox */
     }
-
-    /* 3) WebKit/Blink-specific marker (Chrome, Safari, Edge) */
     details > summary::-webkit-details-marker { 
-    display: none; 
+      display: none; /* WebKit/Blink */
     }
 
     /* Custom closed state icon */
     summary::before {
-      content: "+ "; /* triangle pointing right */
+      content: "▸ "; /* triangle pointing right */
       transition: transform .2s ease;
     }
 
     /* Custom open state icon */
     details[open] > summary::before {
-      content: "- "; /* triangle pointing down */
+      content: "▾ "; /* triangle pointing down */
     }
   </style>
 </head>
