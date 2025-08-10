@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Organization Chart — JSON Inline Accordion</title>
+  <title>Organization Chart</title>
   <style>
     /* Use a universal box-sizing so padding/margin calculations are predictable */
     * { box-sizing: border-box; }
@@ -45,13 +45,13 @@
 
     /* Custom closed state icon */
     summary::before {
-      content: "▸ "; /* triangle pointing right */
+      content: "+ "; /* triangle pointing right */
       transition: transform .2s ease;
     }
 
     /* Custom open state icon */
     details[open] > summary::before {
-      content: "▾ "; /* triangle pointing down */
+      content: "- "; /* triangle pointing down */
     }
   </style>
 </head>
