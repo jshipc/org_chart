@@ -5,22 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Organization Chart — JSON Inline Accordion</title>
   <style>
+    /* Use a universal box-sizing so padding/margin calculations are predictable */
     * { box-sizing: border-box; }
-    body { font-family: system-ui, sans-serif; line-height: 1.5; margin: 0; padding: 1rem; max-width: 80ch; }
-    h1 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); margin-bottom: 1rem; }
-    ol { padding-left: 1.25rem; }
-    details { margin: 0.25rem 0; }
-    summary { cursor: pointer; }
-    summary::-webkit-details-marker { display: none; }
-    summary::before { content: "+ "; transition: transform .2s ease; }
-    details[open] > summary::before { content: "- "; }
+
+    /* Base body styling: system font for speed/readability, max-width for readability */
+    body {
+      font-family: system-ui, sans-serif;
+      line-height: 1.5;
+      margin: 0;
+      padding: 1rem;
+      max-width: 80ch;
+    }
+
+    /* Responsive heading size */
+    h1 {
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+      margin-bottom: 1rem;
+    }
+
+    /* Ordered list padding for indentation */
+    ol {
+      padding-left: 1.25rem;
+    }
+
+    /* Space between accordion sections */
+    details {
+      margin: 0.25rem 0;
+    }
+
+    /* Pointer cursor to indicate clickable summary */
+    summary {
+      cursor: pointer;
+    }
+
+    /* Hide the default disclosure triangle */
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    /* Custom closed state icon */
+    summary::before {
+      content: "▸ "; /* triangle pointing right */
+      transition: transform .2s ease;
+    }
+
+    /* Custom open state icon */
+    details[open] > summary::before {
+      content: "▾ "; /* triangle pointing down */
+    }
   </style>
 </head>
 <body>
   <h1>Organization Chart</h1>
+  <!-- Container where the generated org chart will be placed -->
   <div id="org-chart"></div>
 
   <script>
+  /*
+    Inline JSON data representing the organization hierarchy.
+    Each object can have:
+      - title: string (role name)
+      - subordinates: array of similar objects (optional)
+  */
   const orgData = {
     "title": "Chief Executive Officer (CEO)",
     "subordinates": [
@@ -84,27 +130,44 @@
     ]
   };
 
+  /*
+    Recursive function to create a role element.
+    - If the role has subordinates: create a <details> with a <summary> and nested list.
+    - If no subordinates: create a simple <span> with the title.
+  */
   function createRole(role) {
     if (role.subordinates && role.subordinates.length) {
+      // Create a <details> container
       const details = document.createElement('details');
+
+      // Create the clickable summary for this role
       const summary = document.createElement('summary');
       summary.textContent = role.title;
       details.appendChild(summary);
+
+      // Create a list for subordinates
       const list = document.createElement('ol');
+
+      // Recursively create each subordinate entry
       role.subordinates.forEach(sub => {
         const li = document.createElement('li');
         li.appendChild(createRole(sub));
         list.appendChild(li);
       });
+
+      // Add the list to the details
       details.appendChild(list);
+
       return details;
     } else {
+      // No subordinates: return a text element only
       const span = document.createElement('span');
       span.textContent = role.title;
       return span;
     }
   }
 
+  // Build the org chart and insert into the container
   document.getElementById('org-chart').appendChild(createRole(orgData));
   </script>
 </body>
